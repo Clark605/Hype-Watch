@@ -10,11 +10,21 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  flutter_bloc: # Cubit
+  dio: # HTTP client
+  get_it: # Service locator
+  injectable: # Annotation-based DI
+  freezed_annotation: # Immutable models + states
+  json_annotation: # JSON serialization
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  build_runner:
+  freezed:
+  json_serializable:
+  injectable_generator:
 
 
 # For information on the generic Dart part of this file, see the
