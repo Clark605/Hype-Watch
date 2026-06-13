@@ -1,58 +1,95 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:world_cup_watch/core/theme/app_colors.dart';
+import 'package:world_cup_watch/features/matches/data/repo/matches_repo.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/match_card.dart';
+import 'package:world_cup_watch/features/matches/presentation/cubit/match_details_cubit.dart';
+import 'package:world_cup_watch/features/matches/presentation/cubit/matches_cubit.dart';
+import 'package:world_cup_watch/features/matches/presentation/screens/match_details_screen.dart';
 
 class HypeMatchCard extends StatelessWidget {
   final MatchCard matchCard;
 
   const HypeMatchCard({super.key, required this.matchCard});
 
+  // ── Navigation ────────────────────────────────────────────────────────────────
+  void _openDetails(BuildContext context) {
+    // Pull cached groups + teams from MatchesCubit's state so we don't re-fetch
+    final matchesCubit = context.read<MatchesCubit>();
+    final groups = matchesCubit.cachedGroups;
+    final teams = matchesCubit.cachedTeams;
+    final repository = context.read<MatchesRepository>();
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => MatchDetailsCubit(
+            repository: repository,
+            match: matchCard.match,
+            groups: groups,
+            teams: teams,
+          ),
+          child: MatchDetailsScreen(
+            match: matchCard.match,
+            homeTeam: matchCard.homeTeam,
+            awayTeam: matchCard.awayTeam,
+            groups: groups,
+            teams: teams,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isHighHype = matchCard.hypeScore >= 8.0;
     final isLiveOrToday = matchCard.isToday && !matchCard.isFinished;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: isHighHype
-            ? [
-                BoxShadow(
-                  color: AppColors.tertiaryFixed.withValues(alpha: 0.2),
-                  blurRadius: 20,
-                  spreadRadius: 0,
+    return GestureDetector(
+      onTap: () => _openDetails(context),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: isHighHype
+              ? [
+                  BoxShadow(
+                    color: AppColors.tertiaryFixed.withValues(alpha: 0.2),
+                    blurRadius: 20,
+                    spreadRadius: 0,
+                  ),
+                ]
+              : null,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceContainer.withValues(alpha: 0.6),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isHighHype
+                      ? AppColors.tertiaryFixed.withValues(alpha: 0.2)
+                      : AppColors.outlineVariant.withValues(alpha: 0.3),
                 ),
-              ]
-            : null,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppColors.surfaceContainer.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isHighHype
-                    ? AppColors.tertiaryFixed.withValues(alpha: 0.2)
-                    : AppColors.outlineVariant.withValues(alpha: 0.3),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(isLiveOrToday),
-                const SizedBox(height: 24),
-                _buildTeams(isLiveOrToday),
-                if (matchCard.reasons.isNotEmpty) ...[
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(isLiveOrToday),
                   const SizedBox(height: 24),
-                  _buildReasonBadge(),
+                  _buildTeams(isLiveOrToday),
+                  if (matchCard.reasons.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    _buildReasonBadge(),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
@@ -85,7 +122,7 @@ class HypeMatchCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 const Text(
-                  'MATCHDAY', // Mock static for live text since we don't have minute
+                  'MATCHDAY',
                   style: TextStyle(
                     fontFamily: 'JetBrains Mono',
                     fontSize: 12,
@@ -116,7 +153,6 @@ class HypeMatchCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  // Can format the date nicely here, let's keep it simple
                   matchCard.match.localDate.split(' ').first,
                   style: const TextStyle(
                     fontFamily: 'JetBrains Mono',
@@ -201,20 +237,76 @@ class HypeMatchCard extends StatelessWidget {
         Expanded(
           child: _buildTeamCol(matchCard.homeFlag, matchCard.homeTeam.nameEn),
         ),
+        // ── Center: score if finished, VS if upcoming ──────────────────────────
         Expanded(
           child: Container(
             alignment: Alignment.center,
-            child: Text(
-              matchCard.isFinished ? 'FT' : 'VS',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 24,
-                fontWeight: FontWeight.w900,
-                color: matchCard.isFinished
-                    ? AppColors.onSurface
-                    : AppColors.onSurfaceVariant.withValues(alpha: 0.5),
-              ),
-            ),
+            child:
+                matchCard.isFinished &&
+                    matchCard.homeScore != null &&
+                    matchCard.awayScore != null
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${matchCard.homeScore}',
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 36,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.onSurface,
+                              height: 1.0,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 6),
+                            child: Text(
+                              '–',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 24,
+                                fontWeight: FontWeight.w300,
+                                color: AppColors.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '${matchCard.awayScore}',
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 36,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.onSurface,
+                              height: 1.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'FT',
+                        style: TextStyle(
+                          fontFamily: 'JetBrains Mono',
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 2.0,
+                          color: AppColors.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  )
+                : Text(
+                    'VS',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.onSurfaceVariant.withValues(alpha: 0.5),
+                    ),
+                  ),
           ),
         ),
         Expanded(
@@ -224,7 +316,7 @@ class HypeMatchCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamCol(String flagUrl, String code) {
+  Widget _buildTeamCol(String flagUrl, String name) {
     return Column(
       children: [
         Container(
@@ -255,7 +347,7 @@ class HypeMatchCard extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          code,
+          name,
           style: const TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 20,

@@ -6,6 +6,7 @@ import 'package:world_cup_watch/core/network/dio_client.dart';
 import 'package:world_cup_watch/core/network/result_api.dart';
 import 'package:world_cup_watch/features/matches/data/models/group_model.dart';
 import 'package:world_cup_watch/features/matches/data/models/match_model.dart';
+import 'package:world_cup_watch/features/matches/data/models/stadium_model.dart';
 import 'package:world_cup_watch/features/matches/data/models/team_model.dart';
 import 'package:world_cup_watch/features/matches/data/repo/matches_repo.dart';
 
@@ -19,6 +20,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
   List<Match>? _cachedMatches;
   List<Groups>? _cachedGroups;
   List<Team>? _cachedTeams;
+  // Stadium cache keyed by ID — avoids re-fetching the same stadium
+  final Map<String, Stadium> _cachedStadiums = {};
 
   MatchesRepositoryImpl(this._dioClient);
 
@@ -32,7 +35,6 @@ class MatchesRepositoryImpl implements MatchesRepository {
       _cachedMatches = matches;
       return SuccessApi(matches);
     } on DioException catch (e) {
-      // Return cached data if available so the UI doesn't break on network error
       if (_cachedMatches != null) return SuccessApi(_cachedMatches!);
       return ErrorApi(ErrorMessageHelper.getErrorMessage(e));
     } catch (e) {
@@ -73,6 +75,29 @@ class MatchesRepositoryImpl implements MatchesRepository {
       return ErrorApi(ErrorMessageHelper.getErrorMessage(e));
     } catch (e) {
       if (_cachedTeams != null) return SuccessApi(_cachedTeams!);
+      return ErrorApi('Unexpected error: ${e.toString()}');
+    }
+  }
+
+  // ── getStadiumById ────────────────────────────────────────────────────────────
+  /// Fetches a single stadium by ID. Returns cached result if already fetched.
+  @override
+  Future<ResultApi<Stadium>> getStadiumById(String stadiumId) async {
+    // Return from cache — same session, same stadium won't change
+    if (_cachedStadiums.containsKey(stadiumId)) {
+      return SuccessApi(_cachedStadiums[stadiumId]!);
+    }
+    try {
+      final response = await _dioClient.dio.get(
+        '${ApiConstants.stadiumEp}/$stadiumId',
+      );
+      final stadium = Stadium.fromJson(response.data as Map<String, dynamic>);
+      print('Fetched stadium: ${stadium.nameEn}');
+      _cachedStadiums[stadiumId] = stadium;
+      return SuccessApi(stadium);
+    } on DioException catch (e) {
+      return ErrorApi(ErrorMessageHelper.getErrorMessage(e));
+    } catch (e) {
       return ErrorApi('Unexpected error: ${e.toString()}');
     }
   }

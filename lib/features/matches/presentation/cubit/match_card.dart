@@ -29,6 +29,8 @@ class MatchCard {
   double get hypeScore => hype.score;
   List<String> get reasons => hype.reasons;
   bool get isFinished => match.finished;
+  int? get homeScore => match.homeScore;
+  int? get awayScore => match.awayScore;
   bool get isToday {
     final matchDate = DateFormat(
       "MM/dd/yyyy HH:mm",

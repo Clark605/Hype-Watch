@@ -28,6 +28,7 @@ class Match {
   final String stage;
   final String localDate;
   final bool finished;
+  final String? stadiumId;
 
   Match({
     required this.id,
@@ -44,6 +45,7 @@ class Match {
     required this.stage,
     required this.localDate,
     required this.finished,
+    this.stadiumId,
   });
 
   factory Match.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class Match {
       stage: json['type'] ?? 'group',
       localDate: json['local_date'] ?? '',
       finished: json['finished'] == 'TRUE',
+      stadiumId: json['stadium_id'] ?? json['stadium'],
     );
   }
 }

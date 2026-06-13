@@ -1,6 +1,7 @@
 import 'package:world_cup_watch/core/network/result_api.dart';
 import 'package:world_cup_watch/features/matches/data/models/match_model.dart';
 import 'package:world_cup_watch/features/matches/data/models/group_model.dart';
+import 'package:world_cup_watch/features/matches/data/models/stadium_model.dart';
 import 'package:world_cup_watch/features/matches/data/models/team_model.dart';
 
 /// Abstract repository for the matches feature.
@@ -10,6 +11,7 @@ import 'package:world_cup_watch/features/matches/data/models/team_model.dart';
 /// - [getMatches]  → used by matches feature + tournament feature
 /// - [getGroups]   → used by matches feature (hype score stakes factor)
 /// - [getTeams]    → used by matches feature (flags) + tournament feature
+/// - [getStadiumById] → used by match details screen only, so separate to avoid unnecessary data fetching in matches list
 abstract class MatchesRepository {
   /// Returns all 104 World Cup matches.
   /// Cubit is responsible for filtering by date or stage.
@@ -22,4 +24,8 @@ abstract class MatchesRepository {
   /// Returns all 48 teams with flags and FIFA codes.
   /// Used to enrich match cards with flag images and team names.
   Future<ResultApi<List<Team>>> getTeams();
+
+  /// Returns stadium details for a given [stadiumId].
+  /// Called by [MatchDetailsCubit] when the details screen opens.
+  Future<ResultApi<Stadium>> getStadiumById(String stadiumId);
 }

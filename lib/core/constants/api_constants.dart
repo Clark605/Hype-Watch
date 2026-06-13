@@ -5,6 +5,7 @@ abstract class ApiConstants {
   static const String gamesEp = "get/games";
   static const String groupsEp = "get/groups";
   static const String teamsEp = "get/teams";
+  static const String stadiumEp = "get/stadium";
 
   // In production you'd read this from secure storage
   static const String token =

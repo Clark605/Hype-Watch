@@ -61,7 +61,7 @@ class GroupTeamStanding {
 
   factory GroupTeamStanding.fromJson(Map<String, dynamic> json) {
     return GroupTeamStanding(
-      teamId: json['_id'] ?? '',
+      teamId: json['team_id'] ?? json['teamId'] ?? json['_id'] ?? '',
       matchesPlayed: int.tryParse(json['mp'] ?? '0') ?? 0,
       won: int.tryParse(json['w'] ?? '0') ?? 0,
       lost: int.tryParse(json['l'] ?? '0') ?? 0,
