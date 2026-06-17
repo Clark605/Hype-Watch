@@ -91,10 +91,12 @@ class MatchesRepositoryImpl implements MatchesRepository {
       final response = await _dioClient.dio.get(
         '${ApiConstants.stadiumEp}/$stadiumId',
       );
-      final stadium = Stadium.fromJson(response.data as Map<String, dynamic>);
-      print('Fetched stadium: ${stadium.nameEn}');
-      _cachedStadiums[stadiumId] = stadium;
-      return SuccessApi(stadium);
+      final stadium = StadiumModel.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+      print('Fetched stadium: ${stadium.stadium?.nameEn}');
+      _cachedStadiums[stadiumId] = stadium.stadium!;
+      return SuccessApi(stadium.stadium!);
     } on DioException catch (e) {
       return ErrorApi(ErrorMessageHelper.getErrorMessage(e));
     } catch (e) {

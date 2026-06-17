@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:world_cup_watch/core/theme/app_colors.dart';
+import 'package:world_cup_watch/core/theme/app_fonts.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_cubit.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_state.dart';
-import 'package:world_cup_watch/features/matches/presentation/widgets/bottom_nav_bar.dart';
-import 'package:world_cup_watch/features/matches/presentation/widgets/hype_match_card.dart';
-import 'package:world_cup_watch/features/matches/presentation/widgets/match_date_selector.dart';
-import 'package:world_cup_watch/features/matches/presentation/widgets/top_app_bar.dart';
+import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/bottom_nav_bar.dart';
+import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/hype_match_card.dart';
+import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/match_date_selector.dart';
+import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/top_app_bar.dart';
 
 class MatchesScreen extends StatefulWidget {
   const MatchesScreen({super.key});
@@ -25,14 +26,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.screenBackground,
       appBar: const TopAppBar(),
       extendBody: true,
       body: BlocBuilder<MatchesCubit, MatchesState>(
         builder: (context, state) {
           if (state is MatchesLoading || state is MatchesInitial) {
             return const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+              child: CircularProgressIndicator(color: AppColors.brandRed),
             );
           } else if (state is MatchesError) {
             return Center(
@@ -47,7 +48,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   const SizedBox(height: 16),
                   Text(
                     state.message,
-                    style: const TextStyle(color: AppColors.onSurfaceVariant),
+                    style: const TextStyle(color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
@@ -64,24 +65,15 @@ class _MatchesScreenState extends State<MatchesScreen> {
           } else if (state is MatchesLoaded) {
             return CustomScrollView(
               slivers: [
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
                       top: 32,
                       bottom: 16,
                     ),
-                    child: Text(
-                      "Matches",
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.02 * 32,
-                        color: AppColors.onSurface,
-                      ),
-                    ),
+                    child: Text("Matches", style: AppFonts.font32Black800),
                   ),
                 ),
                 const SliverToBoxAdapter(

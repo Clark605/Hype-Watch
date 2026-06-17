@@ -15,15 +15,13 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
           right: 16,
         ),
         decoration: BoxDecoration(
-          color: AppColors.background.withValues(alpha: 0.8),
+          color: AppColors.screenBackground.withValues(alpha: 0.8),
           border: Border(
-            bottom: BorderSide(
-              color: AppColors.outlineVariant.withValues(alpha: 0.2),
-            ),
+            bottom: BorderSide(color: AppColors.border.withValues(alpha: 0.2)),
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.tertiaryFixed.withValues(alpha: 0.1),
+              color: AppColors.accentGreen.withValues(alpha: 0.1),
               blurRadius: 20,
             ),
           ],
@@ -34,7 +32,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
             IconButton(
               icon: const Icon(
                 Icons.sports_soccer,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.textSecondary,
               ),
               onPressed: () {},
             ),
@@ -45,14 +43,14 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fontSize: 32,
                 fontWeight: FontWeight.w900,
                 fontStyle: FontStyle.italic,
-                color: AppColors.primary,
+                color: AppColors.brandRed,
                 letterSpacing: -0.02 * 32,
               ),
             ),
             IconButton(
               icon: const Icon(
                 Icons.notifications_none,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.textSecondary,
               ),
               onPressed: () {},
             ),

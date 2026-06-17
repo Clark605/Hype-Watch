@@ -268,38 +268,42 @@ class HypeScoreCalculator {
         reasons.add(HypeReasons.roundOf32);
         break;
       case 'group':
-        if (stakesScore >= 8.5)
+        if (stakesScore >= 8.5) {
           reasons.add(HypeReasons.mustWinGame);
-        else if (stakesScore >= 6.5)
+        } else if (stakesScore >= 6.5) {
           reasons.add(HypeReasons.groupStageDecider);
-        else if (stakesScore <= 2.5)
+        } else if (stakesScore <= 2.5) {
           reasons.add(HypeReasons.deadRubber);
+        }
         break;
     }
 
     // Rivalry reason
-    if (rivalryScore >= 9.0)
+    if (rivalryScore >= 9.0) {
       reasons.add(HypeReasons.classicRivalry);
-    else if (rivalryScore >= 7.0)
+    } else if (rivalryScore >= 7.0) {
       reasons.add(HypeReasons.historicRivalry);
-    else if (rivalryScore >= 5.0)
+    } else if (rivalryScore >= 5.0) {
       reasons.add(HypeReasons.continentalDerby);
-    else if (rivalryScore <= 2.5)
+    } else if (rivalryScore <= 2.5) {
       reasons.add(HypeReasons.davidVsGoliath);
+    }
 
     // Team quality reason
-    if (qualityScore >= 9.0)
+    if (qualityScore >= 9.0) {
       reasons.add(HypeReasons.bothTopFive);
-    else if (qualityScore >= 7.5)
+    } else if (qualityScore >= 7.5) {
       reasons.add(HypeReasons.bothTopTen);
-    else if (qualityScore >= 6.0)
+    } else if (qualityScore >= 6.0) {
       reasons.add(HypeReasons.titleContender);
+    }
 
     // Goal threat reason
-    if (goalScore >= 8.0)
+    if (goalScore >= 8.0) {
       reasons.add(HypeReasons.goalFest);
-    else if (goalScore >= 6.0)
+    } else if (goalScore >= 6.0) {
       reasons.add(HypeReasons.highScoring);
+    }
 
     // Stakes reason (if not already covered by stage)
     if (input.stage.toLowerCase() == 'group') {

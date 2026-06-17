@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:world_cup_watch/core/theme/app_colors.dart';
+import 'package:world_cup_watch/core/theme/app_fonts.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_cubit.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_state.dart';
 
@@ -70,18 +71,18 @@ class _FilterButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.secondaryContainer.withValues(alpha: 0.2)
-              : AppColors.surfaceContainer,
+              ? AppColors.selectedButtonBackground.withValues(alpha: 0.2)
+              : AppColors.cardBackground,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: isSelected
-                ? AppColors.secondaryFixed
-                : AppColors.outlineVariant.withValues(alpha: 0.5),
+                ? AppColors.selectedButtonBorder
+                : AppColors.border.withValues(alpha: 0.5),
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.tertiaryFixed.withValues(alpha: 0.2),
+                    color: AppColors.accentGreen.withValues(alpha: 0.2),
                     blurRadius: 20,
                   ),
                 ]
@@ -90,14 +91,10 @@ class _FilterButton extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           title.toUpperCase(),
-          style: TextStyle(
-            fontFamily: 'JetBrains Mono',
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
+          style: AppFonts.font11Secondary700.copyWith(
             color: isSelected
-                ? AppColors.onSecondaryFixed
-                : AppColors.onSurfaceVariant,
+                ? AppColors.selectedText
+                : AppColors.textSecondary,
           ),
         ),
       ),

@@ -340,7 +340,7 @@ class HypeMatchCard extends StatelessWidget {
             child: Image.network(
               flagUrl,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) =>
+              errorBuilder: (_, _, _) =>
                   Container(color: AppColors.surfaceVariant),
             ),
           ),

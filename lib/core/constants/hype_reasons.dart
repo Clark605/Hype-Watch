@@ -4,7 +4,7 @@
 /// Each match card shows up to 3 reason tags (the top 3 by priority).
 ///
 /// Reasons are evaluated at runtime by HypeScoreCalculator and
-/// returned as a List<HypeReason> alongside the numeric score.
+/// returned as a [List<HypeReason>] alongside the numeric score.
 ///
 /// Usage in UI:
 ///   match.hyp eReasons.take(3).forEach((r) => HypeTag(label: r.label))

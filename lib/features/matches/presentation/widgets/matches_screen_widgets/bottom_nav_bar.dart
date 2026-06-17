@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:world_cup_watch/core/theme/app_colors.dart';
+import 'package:world_cup_watch/core/theme/app_fonts.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
@@ -8,12 +9,10 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainer.withValues(alpha: 0.9),
+        color: AppColors.cardBackground.withValues(alpha: 0.9),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
         border: Border(
-          top: BorderSide(
-            color: AppColors.outlineVariant.withValues(alpha: 0.3),
-          ),
+          top: BorderSide(color: AppColors.border.withValues(alpha: 0.3)),
         ),
         boxShadow: const [
           BoxShadow(
@@ -76,7 +75,7 @@ class _NavItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: isActive
             ? BoxDecoration(
-                color: AppColors.primaryFixed,
+                color: AppColors.activeBackground,
                 borderRadius: BorderRadius.circular(12),
               )
             : null,
@@ -86,19 +85,13 @@ class _NavItem extends StatelessWidget {
             Icon(
               icon,
               size: 24,
-              color: isActive ? AppColors.primary : AppColors.onSurfaceVariant,
+              color: isActive ? AppColors.brandRed : AppColors.textSecondary,
             ),
             const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
-                fontFamily: 'JetBrains Mono',
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.0,
-                color: isActive
-                    ? AppColors.primary
-                    : AppColors.onSurfaceVariant,
+              style: AppFonts.font10Secondary700.copyWith(
+                color: isActive ? AppColors.brandRed : AppColors.textSecondary,
               ),
             ),
           ],
