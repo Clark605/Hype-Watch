@@ -35,9 +35,7 @@ class MatchCard {
     final matchDate = DateFormat(
       "MM/dd/yyyy HH:mm",
     ).parse(match.localDate).toUtc();
-    print(
-      'Checking if match on ${matchDate.toString()} is today (${DateTime.now().toLocal()})',
-    );
+
     final nowUtc = DateTime.now().toUtc();
 
     final difference = matchDate.difference(nowUtc).inHours.abs();

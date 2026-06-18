@@ -15,6 +15,7 @@ dependencies:
   get_it: # Service locator
   injectable: # Annotation-based DI
   intl: ^0.20.2 # For date formatting
+  path_provider: ^2.1.6 # For accessing device storage
 
 
 dev_dependencies:

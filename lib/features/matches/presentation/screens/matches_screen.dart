@@ -7,7 +7,9 @@ import 'package:world_cup_watch/features/matches/presentation/cubit/matches_stat
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/bottom_nav_bar.dart';
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/hype_match_card.dart';
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/match_date_selector.dart';
+import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/refresh_failed_banner.dart';
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/top_app_bar.dart';
+import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/updating_indicator.dart';
 
 class MatchesScreen extends StatefulWidget {
   const MatchesScreen({super.key});
@@ -63,55 +65,72 @@ class _MatchesScreenState extends State<MatchesScreen> {
               ),
             );
           } else if (state is MatchesLoaded) {
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 32,
-                      bottom: 16,
-                    ),
-                    child: Text("Matches", style: AppFonts.font32Black800),
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 32),
-                    child: MatchFilterSelector(),
-                  ),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    bottom:
-                        MediaQuery.of(context).padding.bottom +
-                        80, // for bottom nav
-                  ),
-                  sliver: state.matchCards.isEmpty
-                      ? const SliverToBoxAdapter(
-                          child: Center(
-                            child: Text(
-                              "No matches found.",
-                              style: TextStyle(
-                                color: AppColors.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        )
-                      : SliverList(
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            return HypeMatchCard(
-                              matchCard: state.matchCards[index],
-                            );
-                          }, childCount: state.matchCards.length),
+            return Stack(
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 32,
+                          bottom: 16,
                         ),
+                        child: Text("Matches", style: AppFonts.font32Black800),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 32),
+                        child: MatchFilterSelector(),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        bottom:
+                            MediaQuery.of(context).padding.bottom +
+                            80, // for bottom nav
+                      ),
+                      sliver: state.matchCards.isEmpty
+                          ? const SliverToBoxAdapter(
+                              child: Center(
+                                child: Text(
+                                  "No matches found.",
+                                  style: TextStyle(
+                                    color: AppColors.onSurfaceVariant,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SliverList(
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                return HypeMatchCard(
+                                  matchCard: state.matchCards[index],
+                                );
+                              }, childCount: state.matchCards.length),
+                            ),
+                    ),
+                  ],
                 ),
+                if (state.refreshFailed)
+                  RefreshFailedBanner(
+                    onRetry: () => context.read<MatchesCubit>().retryRefresh(),
+                    onDismiss: () =>
+                        context.read<MatchesCubit>().dismissRefreshFailure(),
+                  ),
+                if (state.isRefreshing)
+                  const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: UpdatingIndicator(),
+                  ),
               ],
             );
           }

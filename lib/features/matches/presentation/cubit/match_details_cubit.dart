@@ -60,7 +60,6 @@ class MatchDetailsCubit extends Cubit<MatchDetailsState> {
       final result = await _repository.getStadiumById(stadiumId);
       if (result is SuccessApi<Stadium>) {
         stadium = result.data;
-        print(stadium.nameEn);
       }
 
       // If the stadium fetch fails, stadium stays null — UI degrades gracefully
