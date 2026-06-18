@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:world_cup_watch/core/theme/app_colors.dart';
+import 'package:world_cup_watch/core/theme/app_fonts.dart';
 import 'package:world_cup_watch/features/matches/data/repo/matches_repo.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/match_card.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/match_details_cubit.dart';
@@ -121,16 +122,7 @@ class HypeMatchCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'MATCHDAY',
-                  style: TextStyle(
-                    fontFamily: 'JetBrains Mono',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                    color: AppColors.onErrorContainer,
-                  ),
-                ),
+                Text('MATCHDAY', style: AppFonts.font12Red700),
               ],
             ),
           )
@@ -154,11 +146,7 @@ class HypeMatchCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   matchCard.match.localDate.split(' ').first,
-                  style: const TextStyle(
-                    fontFamily: 'JetBrains Mono',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
+                  style: AppFonts.font12Red700.copyWith(
                     color: AppColors.onSurfaceVariant,
                   ),
                 ),
@@ -195,11 +183,7 @@ class HypeMatchCard extends StatelessWidget {
               children: [
                 Text(
                   matchCard.hypeScore.toStringAsFixed(1),
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w900,
-                    height: 1.0,
+                  style: AppFonts.font18Black800.copyWith(
                     color: matchCard.hypeScore >= 8.0
                         ? (matchCard.hypeScore >= 9.5
                               ? AppColors.onSecondaryFixed
@@ -210,16 +194,13 @@ class HypeMatchCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'HYPE',
-                  style: TextStyle(
-                    fontFamily: 'JetBrains Mono',
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 2.0,
+                  style: AppFonts.font10Secondary700.copyWith(
                     color: matchCard.hypeScore >= 8.0
                         ? (matchCard.hypeScore >= 9.5
                               ? AppColors.onSecondaryFixed
-                              : AppColors.onTertiaryFixedVariant)
+                              : AppColors.onTertiaryFixed)
                         : AppColors.onSurfaceVariant,
+                    letterSpacing: 2.0,
                   ),
                 ),
               ],
@@ -253,60 +234,30 @@ class HypeMatchCard extends StatelessWidget {
                         children: [
                           Text(
                             '${matchCard.homeScore}',
-                            style: const TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.onSurface,
-                              height: 1.0,
+                            style: AppFonts.font28secondary900.copyWith(
+                              color: isLive
+                                  ? AppColors.error
+                                  : AppColors.onSurfaceVariant,
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.symmetric(horizontal: 6),
                             child: Text(
                               '–',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 24,
-                                fontWeight: FontWeight.w300,
-                                color: AppColors.onSurfaceVariant,
-                              ),
+                              style: AppFonts.font32secondary300,
                             ),
                           ),
                           Text(
                             '${matchCard.awayScore}',
-                            style: const TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.onSurface,
-                              height: 1.0,
-                            ),
+                            style: AppFonts.font32Black800,
                           ),
                         ],
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        'FT',
-                        style: TextStyle(
-                          fontFamily: 'JetBrains Mono',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 2.0,
-                          color: AppColors.onSurfaceVariant,
-                        ),
-                      ),
+                      Text('FT', style: AppFonts.font10Secondary700),
                     ],
                   )
-                : Text(
-                    'VS',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                      color: AppColors.onSurfaceVariant.withValues(alpha: 0.5),
-                    ),
-                  ),
+                : Text('VS', style: AppFonts.font28secondary900),
           ),
         ),
         Expanded(
@@ -346,16 +297,7 @@ class HypeMatchCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          name,
-          style: const TextStyle(
-            fontFamily: 'Montserrat',
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: AppColors.onSurface,
-          ),
-          textAlign: TextAlign.center,
-        ),
+        Text(name, style: AppFonts.font15Black700, textAlign: TextAlign.center),
       ],
     );
   }
@@ -383,24 +325,11 @@ class HypeMatchCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Hype Factors',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.onSurface,
-                  ),
-                ),
+                Text('Hype Factors', style: AppFonts.font13Black700),
                 const SizedBox(height: 4),
                 Text(
                   matchCard.reasons.join(' • '),
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    color: AppColors.onSurfaceVariant,
-                    height: 1.3,
-                  ),
+                  style: AppFonts.font11Secondary700,
                 ),
               ],
             ),

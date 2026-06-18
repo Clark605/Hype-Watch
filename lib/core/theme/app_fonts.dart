@@ -46,6 +46,12 @@ class AppFonts {
     fontWeight: FontWeight.w700,
     color: AppColors.textPrimary,
   );
+  static TextStyle font12Red700 = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 1.2,
+    color: AppColors.brandRed,
+  );
   static TextStyle font48black900 = TextStyle(
     fontSize: 48,
     fontWeight: FontWeight.w900,
