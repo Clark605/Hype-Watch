@@ -98,7 +98,11 @@ class _MatchDetailsScreenState extends State<MatchDetailsScreen> {
           _buildStageBadge(widget.match.stage, widget.match.group),
           const SizedBox(height: 24),
           // ── Score / Teams hero ─────────────────────────────────────────────
-          _buildScoreHero(),
+          ScoreHero(
+            match: widget.match,
+            homeTeam: widget.homeTeam,
+            awayTeam: widget.awayTeam,
+          ),
           const SizedBox(height: 32),
           // ── Stadium section (only if data available) ───────────────────────
           if (state.stadium != null) ...[
@@ -140,20 +144,6 @@ class _MatchDetailsScreenState extends State<MatchDetailsScreen> {
       default:
         return stage;
     }
-  }
-
-  // ── Score hero ────────────────────────────────────────────────────────────────
-  Widget _buildScoreHero() {
-    final isFinished = widget.match.finished;
-    final homeScore = widget.match.homeScore;
-    final awayScore = widget.match.awayScore;
-
-    return ScoreHero(
-      widget: widget,
-      isFinished: isFinished,
-      homeScore: homeScore,
-      awayScore: awayScore,
-    );
   }
 
   // ── Group standings ───────────────────────────────────────────────────────────

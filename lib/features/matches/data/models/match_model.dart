@@ -23,6 +23,8 @@ class Match {
   final String? awayTeamFlag;
   final int? homeScore;
   final int? awayScore;
+  final String? homeScorers;
+  final String? awayScorers;
   final String? group;
   final int? matchday;
   final String stage;
@@ -40,6 +42,8 @@ class Match {
     this.awayTeamFlag,
     this.homeScore,
     this.awayScore,
+    this.homeScorers,
+    this.awayScorers,
     this.group,
     this.matchday,
     required this.stage,
@@ -57,6 +61,8 @@ class Match {
       awayTeamNameEn: json['away_team_name_en'] ?? '',
       homeScore: int.tryParse(json['home_score'] ?? ''),
       awayScore: int.tryParse(json['away_score'] ?? ''),
+      homeScorers: json['home_scorers'],
+      awayScorers: json['away_scorers'],
       group: json['group'],
       matchday: int.tryParse(json['matchday'] ?? ''),
       stage: json['type'] ?? 'group',

@@ -24,10 +24,7 @@ class GroupStandings extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          group.name?.toUpperCase() ?? 'GROUP STANDINGS',
-          style: AppFonts.font11Secondary700,
-        ),
+        Text('GROUP STANDINGS', style: AppFonts.font11Secondary700),
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
