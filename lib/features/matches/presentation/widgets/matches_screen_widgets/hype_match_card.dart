@@ -234,18 +234,11 @@ class HypeMatchCard extends StatelessWidget {
                         children: [
                           Text(
                             '${matchCard.homeScore}',
-                            style: AppFonts.font28secondary900.copyWith(
-                              color: isLive
-                                  ? AppColors.error
-                                  : AppColors.onSurfaceVariant,
-                            ),
+                            style: AppFonts.font32Black800,
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: Text(
-                              '–',
-                              style: AppFonts.font32secondary300,
-                            ),
+                            child: Text('–', style: AppFonts.font32Black800),
                           ),
                           Text(
                             '${matchCard.awayScore}',

@@ -1,5 +1,5 @@
 abstract class ApiConstants {
-  static const String baseUrl = "http://worldcup26.ir/";
+  static const String baseUrl = "https://worldcup26.ir/";
   static const String registerEp = "auth/register";
   static const String loginEp = "auth/login";
   static const String gamesEp = "get/games";
