@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:world_cup_watch/core/di/di.dart';
+import 'package:world_cup_watch/features/app_section/app_section.dart';
+import 'package:world_cup_watch/features/matches/data/repo/matches_repo.dart';
+import 'package:world_cup_watch/features/matches/presentation/cubit/matches_cubit.dart';
 
 void main() {
   configureDependencies();
@@ -9,9 +13,23 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Flutter Demo', home: Scaffold());
+    return MaterialApp(
+      title: 'World Cup Watch',
+      theme: ThemeData(useMaterial3: true),
+      home: MultiRepositoryProvider(
+        providers: [
+          // ── NEW: expose repo so cards can access it on tap for navigation ────
+          RepositoryProvider<MatchesRepository>(
+            create: (_) => getIt<MatchesRepository>(),
+          ),
+        ],
+        child: BlocProvider(
+          create: (_) => getIt<MatchesCubit>(),
+          child: AppSection(),
+        ),
+      ),
+    );
   }
 }
