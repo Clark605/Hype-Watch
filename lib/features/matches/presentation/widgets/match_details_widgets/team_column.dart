@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:world_cup_watch/core/theme/app_colors.dart';
 import 'package:world_cup_watch/core/theme/app_fonts.dart';
@@ -30,11 +31,25 @@ class TeamColumn extends StatelessWidget {
             ],
           ),
           child: ClipOval(
-            child: Image.network(
-              team.flag,
+            child: CachedNetworkImage(
+              imageUrl: team.flag,
               fit: BoxFit.cover,
-              errorBuilder: (_, _, _) =>
-                  Container(color: AppColors.cardBackgroundElevated),
+              placeholder: (context, url) => Container(
+                color: AppColors.surfaceContainerLow,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: AppColors.surfaceContainerLow,
+                child: const Icon(
+                  Icons.flag_outlined,
+                  color: AppColors.onSurfaceVariant,
+                ),
+              ),
             ),
           ),
         ),

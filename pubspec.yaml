@@ -16,6 +16,7 @@ dependencies:
   injectable: # Annotation-based DI
   intl: ^0.20.2 # For date formatting
   path_provider: ^2.1.6 # For accessing device storage
+  cached_network_image: ^3.4.1 # For caching network images
 
 
 dev_dependencies:
