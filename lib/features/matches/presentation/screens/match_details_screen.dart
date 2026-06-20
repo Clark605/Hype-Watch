@@ -37,9 +37,31 @@ class MatchDetailsScreen extends StatefulWidget {
 }
 
 class _MatchDetailsScreenState extends State<MatchDetailsScreen> {
+  // Derived once from widget fields — no need to store in state or cubit.
+  late final Map<String, Team> _teamById;
+  late final Groups? _matchGroup;
+
   @override
   void initState() {
     super.initState();
+
+    // Build team lookup map directly from the already-loaded teams list.
+    _teamById = {for (final t in widget.teams) t.id: t};
+
+    // Find the group this match belongs to — null for knockout stage.
+    final groupName = widget.match.group;
+    if (groupName != null && groupName.isNotEmpty) {
+      try {
+        _matchGroup = widget.groups.firstWhere(
+          (g) => g.name?.toLowerCase() == groupName.toLowerCase(),
+        );
+      } catch (_) {
+        _matchGroup = null;
+      }
+    } else {
+      _matchGroup = null;
+    }
+
     context.read<MatchDetailsCubit>().load();
   }
 
@@ -49,69 +71,63 @@ class _MatchDetailsScreenState extends State<MatchDetailsScreen> {
       backgroundColor: AppColors.screenBackground,
       body: CustomScrollView(
         slivers: [
-          DetailsAppBar(),
-          SliverToBoxAdapter(
-            child: BlocBuilder<MatchDetailsCubit, MatchDetailsState>(
-              builder: (context, state) {
-                if (state is MatchDetailsLoading) {
-                  return const SizedBox(
-                    height: 300,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.brandRed,
-                      ),
-                    ),
-                  );
-                }
-                if (state is MatchDetailsError) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Text(
-                        state.message,
-                        style: const TextStyle(color: AppColors.textSecondary),
-                      ),
-                    ),
-                  );
-                }
-                if (state is MatchDetailsLoaded) {
-                  return _buildContent(context, state);
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
+          const DetailsAppBar(),
+          SliverToBoxAdapter(child: _buildContent()),
         ],
       ),
     );
   }
 
-  // ── Main content ──────────────────────────────────────────────────────────────
-  Widget _buildContent(BuildContext context, MatchDetailsLoaded state) {
+  Widget _buildContent() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 32),
-          // ── Stage badge ────────────────────────────────────────────────────
+
+          // ── Stage badge — renders immediately, no bloc needed ──────────────
           _buildStageBadge(widget.match.stage, widget.match.group),
           const SizedBox(height: 24),
-          // ── Score / Teams hero ─────────────────────────────────────────────
+
+          // ── Score / Teams hero — renders immediately ───────────────────────
           ScoreHero(
             match: widget.match,
             homeTeam: widget.homeTeam,
             awayTeam: widget.awayTeam,
           ),
           const SizedBox(height: 32),
-          // ── Stadium section (only if data available) ───────────────────────
-          if (state.stadium != null) ...[
-            StadiumCard(stadium: state.stadium!),
-            const SizedBox(height: 32),
-          ],
-          // ── Group standings (only for group-stage matches) ─────────────────
-          if (state.group != null) ...[
-            _buildGroupStandings(state.group!, state.teamById),
+
+          // ── Stadium section — only this section waits on the cubit ─────────
+          BlocBuilder<MatchDetailsCubit, MatchDetailsState>(
+            builder: (context, state) {
+              if (state is StadiumLoading) {
+                return const SizedBox(
+                  height: 80,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.brandRed,
+                      strokeWidth: 2,
+                    ),
+                  ),
+                );
+              }
+              if (state is StadiumLoaded && state.stadium != null) {
+                return Column(
+                  children: [
+                    StadiumCard(stadium: state.stadium!),
+                    const SizedBox(height: 32),
+                  ],
+                );
+              }
+              // StadiumLoaded(stadium: null) or StadiumError — hide section.
+              return const SizedBox.shrink();
+            },
+          ),
+
+          // ── Group standings — renders immediately, null for knockout ────────
+          if (_matchGroup != null) ...[
+            _buildGroupStandings(_matchGroup, _teamById),
             const SizedBox(height: 32),
           ],
         ],
@@ -123,7 +139,6 @@ class _MatchDetailsScreenState extends State<MatchDetailsScreen> {
   Widget _buildStageBadge(String stage, String? groupName) {
     final label = _stageLabel(stage, groupName);
     final isKnockout = stage.toLowerCase() != 'group';
-
     return StateBadge(isKnockout: isKnockout, label: label, widget: widget);
   }
 
@@ -151,7 +166,6 @@ class _MatchDetailsScreenState extends State<MatchDetailsScreen> {
     final standings = group.teams ?? [];
     if (standings.isEmpty) return const SizedBox.shrink();
 
-    // Sort by points desc, then goal difference desc
     final sorted = [...standings]
       ..sort((a, b) {
         final pts = b.points.compareTo(a.points);

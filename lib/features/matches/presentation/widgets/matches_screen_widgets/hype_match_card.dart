@@ -25,12 +25,8 @@ class HypeMatchCard extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => BlocProvider(
-          create: (_) => MatchDetailsCubit(
-            repository: repository,
-            match: matchCard.match,
-            groups: groups,
-            teams: teams,
-          ),
+          create: (_) =>
+              MatchDetailsCubit(repository: repository, match: matchCard.match),
           child: MatchDetailsScreen(
             match: matchCard.match,
             homeTeam: matchCard.homeTeam,
