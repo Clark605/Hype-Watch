@@ -48,12 +48,6 @@ class BottomNavBar extends StatelessWidget {
             isActive: currentIndex == 1,
             onTap: () => onTap(1),
           ),
-          _NavItem(
-            icon: Icons.settings,
-            label: 'Settings',
-            isActive: currentIndex == 2,
-            onTap: () => onTap(2),
-          ),
         ],
       ),
     );
