@@ -3,7 +3,14 @@ import 'package:world_cup_watch/core/theme/app_colors.dart';
 import 'package:world_cup_watch/core/theme/app_fonts.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
+  final int currentIndex;
+  final Function(int) onTap;
+
+  const BottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +39,20 @@ class BottomNavBar extends StatelessWidget {
           _NavItem(
             icon: Icons.home_filled, // home_storage alternative
             label: 'Matches',
-            isActive: true,
-            onTap: () {},
+            isActive: currentIndex == 0,
+            onTap: () => onTap(0),
           ),
           _NavItem(
             icon: Icons.account_tree,
             label: 'Bracket',
-            isActive: false,
-            onTap: () {},
+            isActive: currentIndex == 1,
+            onTap: () => onTap(1),
           ),
           _NavItem(
-            icon: Icons.person,
-            label: 'Profile',
-            isActive: false,
-            onTap: () {},
+            icon: Icons.settings,
+            label: 'Settings',
+            isActive: currentIndex == 2,
+            onTap: () => onTap(2),
           ),
         ],
       ),

@@ -4,7 +4,6 @@ import 'package:world_cup_watch/core/theme/app_colors.dart';
 import 'package:world_cup_watch/core/theme/app_fonts.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_cubit.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_state.dart';
-import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/bottom_nav_bar.dart';
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/hype_match_card.dart';
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/match_date_selector.dart';
 import 'package:world_cup_watch/features/matches/presentation/widgets/matches_screen_widgets/refresh_failed_banner.dart';
@@ -28,7 +27,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.screenBackground,
       appBar: const TopAppBar(),
       extendBody: true,
       body: BlocBuilder<MatchesCubit, MatchesState>(
@@ -137,7 +135,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
           return const SizedBox.shrink();
         },
       ),
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:world_cup_watch/core/di/di.dart';
+import 'package:world_cup_watch/features/app_section/app_section.dart';
 import 'package:world_cup_watch/features/matches/data/repo/matches_repo.dart';
 import 'package:world_cup_watch/features/matches/presentation/cubit/matches_cubit.dart';
-import 'package:world_cup_watch/features/matches/presentation/screens/matches_screen.dart';
 
 void main() {
   configureDependencies();
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ],
         child: BlocProvider(
           create: (_) => getIt<MatchesCubit>(),
-          child: const MatchesScreen(),
+          child: AppSection(),
         ),
       ),
     );
