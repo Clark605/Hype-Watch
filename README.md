@@ -27,8 +27,7 @@ With 104 matches across 39 days, casual fans don't know which games are worth se
 ## Video Demo
 
 <video controls playsinline width="480" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-    <source src="assets/videos/Screen_Recording_20260625_124909.mp4" type="video/mp4">
-    Your browser does not support embedded video. [Watch the demo video](assets/videos/Screen_Recording_20260625_124909.mp4)
+    <source src="https://github.com/user-attachments/assets/0096cc85-6d71-4c33-a026-adfd70a407c7" type="video/mp4">
 </video>
 
 ---
