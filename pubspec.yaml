@@ -17,6 +17,14 @@ dependencies:
   intl: ^0.20.2 # For date formatting
   path_provider: ^2.1.6 # For accessing device storage
   cached_network_image: ^3.4.1 # For caching network images
+  flutter_native_splash: ^2.4.7 # For splash screen
+  flutter_launcher_icons: ^0.14.4 # For app icons
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21 
+
 
 
 dev_dependencies:
@@ -37,4 +45,6 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/
 
