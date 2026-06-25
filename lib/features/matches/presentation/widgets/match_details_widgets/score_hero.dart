@@ -73,7 +73,11 @@ class ScoreHero extends StatelessWidget {
                           match.finished
                               ? 'FULL TIME'
                               : match.localDate.split(' ').first,
-                          style: AppFonts.font10Secondary700,
+                          style: AppFonts.font13Secondary700,
+                        ),
+                        Text(
+                          match.localDate.split(' ').last,
+                          style: AppFonts.font13Black700,
                         ),
                       ],
                     ),
