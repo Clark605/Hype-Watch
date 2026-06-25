@@ -6,7 +6,7 @@ import 'package:world_cup_watch/features/bracket/presentation/bracket_screen.dar
 
 // ignore: must_be_immutable
 class AppSection extends StatefulWidget {
-  AppSection({super.key});
+  const AppSection({super.key});
 
   @override
   State<AppSection> createState() => _AppSectionState();

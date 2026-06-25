@@ -8,7 +8,7 @@ class UpdatingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.brandRed.withOpacity(0.1),
+      color: AppColors.brandRed.withValues(alpha: 0.1),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -28,6 +28,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const TopAppBar(),
+      backgroundColor: AppColors.screenBackground,
       extendBody: true,
       body: BlocBuilder<MatchesCubit, MatchesState>(
         builder: (context, state) {
