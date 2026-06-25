@@ -8,6 +8,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       child: Container(
+        alignment: Alignment.center,
         height: preferredSize.height + MediaQuery.of(context).padding.top,
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top,
@@ -27,7 +28,6 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               icon: const Icon(
@@ -47,13 +47,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                 letterSpacing: -0.02 * 32,
               ),
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.notifications_none,
-                color: AppColors.textSecondary,
-              ),
-              onPressed: () {},
-            ),
+            const SizedBox(width: 48), // Placeholder for symmetry
           ],
         ),
       ),

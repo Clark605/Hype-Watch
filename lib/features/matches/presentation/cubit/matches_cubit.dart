@@ -17,6 +17,13 @@ class MatchesCubit extends Cubit<MatchesState> {
 
   List<MatchCard> _allMatchCards = [];
 
+  // ── Raw match cache (all 104) ─────────────────────────────────────────────
+  // Exposed so BracketScreen can filter to knockout matches without a new repo call.
+  List<Match> _allMatches = [];
+
+  /// All 104 raw Match objects from the API — used by BracketScreen.
+  List<Match> get allMatches => _allMatches;
+
   /// All groups loaded so far (from cache or network).
   /// Exposed so HypeMatchCard can pass it to MatchDetailsCubit on tap.
   List<Groups> cachedGroups = [];
@@ -42,6 +49,7 @@ class MatchesCubit extends Cubit<MatchesState> {
 
       cachedGroups = diskGroups;
       cachedTeams = diskTeams;
+      _allMatches = diskMatches; // ← store raw matches
 
       final cards = _buildCards(diskMatches, diskGroups, diskTeams);
       _allMatchCards = cards;
@@ -127,6 +135,7 @@ class MatchesCubit extends Cubit<MatchesState> {
 
     cachedGroups = groups;
     cachedTeams = teams;
+    _allMatches = matches; // ← store raw matches
 
     final cards = _buildCards(matches, groups, teams);
     _allMatchCards = cards;

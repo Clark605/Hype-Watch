@@ -30,7 +30,13 @@ class Match {
   final String stage;
   final String localDate;
   final bool finished;
+  final String timeElapsed;
   final String? stadiumId;
+
+  /// For knockout matches with undetermined teams, the API sends labels like
+  /// "Winner Match 74" or "3rd Group B/E/F/I/J" instead of a real team ID.
+  final String? homeTeamLabel;
+  final String? awayTeamLabel;
 
   Match({
     required this.id,
@@ -49,7 +55,10 @@ class Match {
     required this.stage,
     required this.localDate,
     required this.finished,
+    required this.timeElapsed,
     this.stadiumId,
+    this.homeTeamLabel,
+    this.awayTeamLabel,
   });
 
   factory Match.fromJson(Map<String, dynamic> json) {
@@ -65,10 +74,15 @@ class Match {
       awayScorers: json['away_scorers'],
       group: json['group'],
       matchday: int.tryParse(json['matchday'] ?? ''),
+      // API uses "type" field for stage: "group", "r32", "r16",
+      // "quarter_final", "semi_final", "final"
       stage: json['type'] ?? 'group',
       localDate: json['local_date'] ?? '',
       finished: json['finished'] == 'TRUE',
       stadiumId: json['stadium_id'] ?? json['stadium'],
+      timeElapsed: json['time_elapsed'] ?? '',
+      homeTeamLabel: json['home_team_label'],
+      awayTeamLabel: json['away_team_label'],
     );
   }
 }

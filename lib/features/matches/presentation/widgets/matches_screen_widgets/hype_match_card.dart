@@ -43,7 +43,8 @@ class HypeMatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isHighHype = matchCard.hypeScore >= 8.0;
-    final isLiveOrToday = matchCard.isToday && !matchCard.isFinished;
+    final isLiveOrToday =
+        matchCard.match.timeElapsed == 'live' || matchCard.isToday;
 
     return GestureDetector(
       onTap: () => _openDetails(context),
