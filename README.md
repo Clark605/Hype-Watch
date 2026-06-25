@@ -52,6 +52,14 @@ These are intentionally static constants rather than fetched data — rivalry hi
 
 ---
 
+## Backend
+
+The app pulls tournament data from the open-source FIFA World Cup 2026 API: [rezarahiminia/worldcup2026](https://github.com/rezarahiminia/worldcup2026).
+
+That backend provides REST endpoints for matches, teams, groups, stadiums, standings, and live scores. It also includes JWT auth, Swagger docs, public caching, and rate limiting so the data stays fast and reliable during peak traffic.
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
