@@ -1,3 +1,6 @@
+
+
+
 # 🏆 World Cup Watch
 
 > **"Which match should I watch?"** — A Flutter app that ranks every 2026 FIFA World Cup match by how exciting it's likely to be, using a custom five-factor Hype Score algorithm.
@@ -26,11 +29,7 @@ With 104 matches across 39 days, casual fans don't know which games are worth se
 
 ## Video Demo
 
-<video width="480" height="720" controls>
-    <source src="https://github.com/user-attachments/assets/0096cc85-6d71-4c33-a026-adfd70a407c7" type="video/mp4">
-</video>
-
----
+https://github.com/user-attachments/assets/0096cc85-6d71-4c33-a026-adfd70a407c7
 
 ## Hype Score Algorithm
 
